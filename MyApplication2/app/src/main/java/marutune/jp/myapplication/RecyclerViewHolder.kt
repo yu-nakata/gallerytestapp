@@ -18,6 +18,7 @@ class RecyclerViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun onItemLongClick(view: View, position: Int)
     }
 
+    val recyclerViewCell = view.recyclerViewCell
     val photoImageView: SimpleDraweeView = view.photo
     val blurView: View = view.blur_view
     val checkboxImageView: ImageView = view.checkbox_image

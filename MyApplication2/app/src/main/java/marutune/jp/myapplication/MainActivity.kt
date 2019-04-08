@@ -1,5 +1,7 @@
 package marutune.jp.myapplication
 import android.Manifest
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
@@ -41,11 +43,25 @@ class MainActivity : AppCompatActivity(), RecyclerViewHolder.ItemClickListener, 
         val adapter = recyclerView.adapter as RecyclerAdapter
         val isSelected = viewHolder.checkboxImageView.isSelected
 
+        // アニメーションを実施
+        val scaleX = PropertyValuesHolder.ofFloat("scaleX", 1.0f, 0.95f)
+        val scaleY = PropertyValuesHolder.ofFloat("scaleY", 1.0f, 0.95f)
+        val objectAnimator = ObjectAnimator.ofPropertyValuesHolder(viewHolder.recyclerViewCell, scaleX, scaleY)
+        objectAnimator.duration = 100
+        objectAnimator.start()
+        // 戻すアニメーションを実施
+        val reScaleX = PropertyValuesHolder.ofFloat("scaleX", 0.95f, 1.0f)
+        val reScaleY = PropertyValuesHolder.ofFloat("scaleY", 0.95f, 1.0f)
+        val objectAnimator2 = ObjectAnimator.ofPropertyValuesHolder(viewHolder.recyclerViewCell, reScaleX, reScaleY)
+        objectAnimator2.startDelay = 100
+        objectAnimator2.duration = 100
+        objectAnimator2.start()
+
         // 選択状態を変更
         if (isSelected) {
             viewHolder.blurView.visibility = View.INVISIBLE
             viewHolder.checkboxImageView.isSelected = false
-            adapter.itemStateList.put(position, false)
+            adapter.itemStateList.delete(position)
         } else {
             viewHolder.blurView.visibility = View.VISIBLE
             viewHolder.checkboxImageView.isSelected = true
