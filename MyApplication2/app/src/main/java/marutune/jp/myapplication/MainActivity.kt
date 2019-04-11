@@ -174,7 +174,9 @@ class MainActivity : AppCompatActivity(), RecyclerViewHolder.ItemClickListener, 
             while (fileName.size > n) {
 
                 val subFile = File(directory.path + "/" + fileName[n])
-                if (subFile.isDirectory) {
+                if (subFile.isHidden) {
+                    // 隠しフォルダや隠しファイルは無視する
+                } else if (subFile.isDirectory) {
                     listDirectory.add(directory.path + "/" + fileName[n])
                 } else if (subFile.name.endsWith(fileType)) {
                     imgPath = directory.path + "/" + fileName[n]
