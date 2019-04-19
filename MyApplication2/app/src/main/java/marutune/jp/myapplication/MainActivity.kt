@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity(), RecyclerViewHolder.ItemClickListener, 
         val adapter = recyclerView.adapter as RecyclerAdapter
         val byteArray = adapter.itemByteList[position]
         val bundle = Bundle()
-        bundle.putByteArray("image", byteArray)
+        bundle.putByteArray("image", byteArray.readBytes())
 
         // Fragment生成
         val fragment = ImageViewerFragment()
@@ -160,6 +160,7 @@ class MainActivity : AppCompatActivity(), RecyclerViewHolder.ItemClickListener, 
         var n = 0
         var fileName: Array<String>
         var imgPath: String?
+        val regex = """(?i:.*\.(jpg|jpeg))""".toRegex()
 
         // dirList.size() は動的変化あり注意
         while (listDirectory.size > m) {
@@ -178,7 +179,7 @@ class MainActivity : AppCompatActivity(), RecyclerViewHolder.ItemClickListener, 
                     // 隠しフォルダや隠しファイルは無視する
                 } else if (subFile.isDirectory) {
                     listDirectory.add(directory.path + "/" + fileName[n])
-                } else if (subFile.name.endsWith(fileType)) {
+                } else if (subFile.name.matches(regex)) {
                     imgPath = directory.path + "/" + fileName[n]
                     mPhotos.add(imgPath)
                 } else {

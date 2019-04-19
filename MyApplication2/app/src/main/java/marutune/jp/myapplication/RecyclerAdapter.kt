@@ -19,7 +19,7 @@ class RecyclerAdapter(
 
     private var mRecyclerView : RecyclerView? = null
     var itemStateList: SparseBooleanArray = SparseBooleanArray()
-    var itemByteList: SparseArray<ByteArray> = SparseArray()
+    var itemByteList: SparseArray<File> = SparseArray()
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
@@ -35,7 +35,7 @@ class RecyclerAdapter(
         val file = File(itemList[p1])
 
         // ポジションをキーとしてByteArrayを保持する
-        itemByteList.put(p1, file.readBytes())
+        itemByteList.put(p1, file)
 
         // 画像読み込み失敗時はタップで4回までリトライ出来るように設定
         p0.photoImageView.controller = Fresco.newDraweeControllerBuilder()
