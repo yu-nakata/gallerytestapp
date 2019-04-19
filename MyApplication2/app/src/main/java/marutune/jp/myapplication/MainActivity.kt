@@ -147,12 +147,12 @@ class MainActivity : AppCompatActivity(), RecyclerViewHolder.ItemClickListener, 
     private fun setImages() {
         val file = Environment.getExternalStorageDirectory()
         val storagePath = file.path
-        searchImageFiles(storagePath, "jpg")
+        searchImageFiles(storagePath)
 
         recyclerView.adapter = RecyclerAdapter(this, this, this, mPhotos)
     }
 
-    private fun searchImageFiles(path: String, fileType: String) {
+    private fun searchImageFiles(path: String) {
         val listDirectory = ArrayList<String>()
         listDirectory.add(path)
 
@@ -161,6 +161,7 @@ class MainActivity : AppCompatActivity(), RecyclerViewHolder.ItemClickListener, 
         var fileName: Array<String>
         var imgPath: String?
         val regex = """(?i:.*\.(jpg|jpeg))""".toRegex()
+        val deSortPhotos = ArrayList<String>()
 
         // dirList.size() は動的変化あり注意
         while (listDirectory.size > m) {
@@ -181,12 +182,19 @@ class MainActivity : AppCompatActivity(), RecyclerViewHolder.ItemClickListener, 
                     listDirectory.add(directory.path + "/" + fileName[n])
                 } else if (subFile.name.matches(regex)) {
                     imgPath = directory.path + "/" + fileName[n]
-                    mPhotos.add(imgPath)
+                    deSortPhotos.add(imgPath)
                 } else {
                 }
                 n++
             }
             m++
         }
+
+        // 日付順でソート
+        val sortPhotos = deSortPhotos.sortedWith(compareByDescending {
+            val file = File(it)
+            file.lastModified()
+        })
+        mPhotos.addAll(sortPhotos)
     }
 }
